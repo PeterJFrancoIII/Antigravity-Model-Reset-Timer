@@ -33,3 +33,9 @@ A sleek, desktop-wrapped Django application for tracking model reset timers acro
 - **Backend**: Django & MongoDB
 - **GUI Wrapper**: PyWebView (Native macOS Cocoa/WebKit)
 - **Frontend**: Vanilla HTML/CSS/JS with glassmorphism aesthetics.
+
+## Contributing
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to help improve this project.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
