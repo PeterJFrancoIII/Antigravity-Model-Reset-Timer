@@ -365,8 +365,7 @@
                             </span>
                             <div class="model-info">
                                 <span class="percent-display" id="pct_display_{{ model }}_{{ account.id }}"
-                                    style="color: {{ account|get_percent:model|get_percent_color }};">{{
-                                    account|get_percent:model }}%</span>
+                                    data-color="{{account|get_percent:model|get_percent_color}}">{{account|get_percent:model}}%</span>
 
                                 {% with reset_val=account|get_reset_time:model %}
                                 <span class="timer" data-target="{{ reset_val|date:'c' }}">READY</span>
@@ -511,9 +510,19 @@
             });
         }
 
+        function updatePercentColors() {
+            document.querySelectorAll('.percent-display').forEach(el => {
+                const color = el.getAttribute('data-color');
+                if (color) {
+                    el.style.color = color;
+                }
+            });
+        }
+
         setInterval(updateClocks, 1000);
         updateClocks();
         initChips();
+        updatePercentColors();
     </script>
 </body>
 
