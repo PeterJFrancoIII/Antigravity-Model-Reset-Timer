@@ -26,6 +26,7 @@ a = Analysis(
         'pymongo',
         'webview',
         'clr', # For Windows support if needed
+        'timers.templatetags.timer_extras',
     ],
     hookspath=[],
     hooksconfig={},
@@ -71,6 +72,6 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='AntigravityTimer.app',
-    icon=None, # Add path to .icns file if available
+    icon='icon.png', # Add path to .icns file if available
     bundle_identifier='com.antigravity.timer',
 )

@@ -3,9 +3,20 @@ import subprocess
 import sys
 import time
 import os
+import multiprocessing
 
 # Global variable to hold our background Django process
 django_process = None
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 def start_server():
     """Starts the Django development server invisibly in the background."""
@@ -13,10 +24,14 @@ def start_server():
     
     # We use subprocess.Popen to run the server without blocking the main thread
     # stdout and stderr are routed to DEVNULL to keep your Mac terminal clean
+    if getattr(sys, 'frozen', False):
+        cmd = [sys.executable, 'runserver', '127.0.0.1:8000', '--noreload']
+    else:
+        cmd = [sys.executable, resource_path('manage.py'), 'runserver', '127.0.0.1:8000', '--noreload']
+
     django_process = subprocess.Popen(
-        [sys.executable, 'manage.py', 'runserver', '127.0.0.1:8000', '--noreload'],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
+        cmd,
+        cwd=resource_path(".")
     )
 
 def on_closed():
@@ -29,6 +44,15 @@ def on_closed():
     sys.exit(0)
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
+    
+    # Check if we're spawned as a subprocess to run the Django server
+    if getattr(sys, 'frozen', False) and len(sys.argv) > 1 and sys.argv[1] == 'runserver':
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'antigravity_timer.settings')
+        from django.core.management import execute_from_command_line
+        execute_from_command_line(sys.argv)
+        sys.exit(0)
+
     print("Starting Antigravity Timer Engine...")
     start_server()
     
