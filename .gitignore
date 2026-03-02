@@ -24,3 +24,8 @@ ENV/
 
 # App-specific
 dashboard_screenshot.png
+
+# Build artifacts
+build/
+dist/
+*.spec
