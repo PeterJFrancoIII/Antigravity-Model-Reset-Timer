@@ -40,8 +40,17 @@ pip install -r requirements.txt
 python3 launcher.py
 ```
 
-## 🤝 How to Contribute
-We are looking for help expanding the Antigravity ecosystem!
+## 🤝 Call for Contributors!
+**We are actively looking for developers to help evolve this project into a native extension of the autonomous Antigravity AI ecosystem!**
+
+Whether you are a Python wizard, a frontend maestro, or an agentic builder, we need your help to implement:
+- **Automated API Telemetry**: Direct hooks into Google AI Studio and Anthropic to poll quotas.
+- **Agentic Polling**: Local REST/WebSocket IPC so autonomous agents can read their own "fuel levels" and pause workflows when quotas run low.
+- **Native Extension Ports**: Migrating this dashboard into a VS Code extension or Antigravity CLI plugin.
+
+👉 **Ready to build the future of AI tooling?** Check out our [Contribution Guidelines (CONTRIBUTING.md)](CONTRIBUTING.md) to get started.
+
+### Existing Areas for Help
 - **Webhooks:** Build API connectors for Anthropic, Google Gemini, and OpenAI.
 - **Notifications:** Implement native OS desktop alerts for timer expirations.
 - **Distributions:** Help refine the PyInstaller `.spec` builds for single-binary releases.
