@@ -18,6 +18,8 @@ def get_reset_time(account, model_type):
 
 @register.filter
 def get_percent(account, model_type):
+    if not account:
+        return 100
     if model_type == 'flash':
         return account.gemini_flash_percent
     elif model_type == 'pro':
@@ -25,3 +27,13 @@ def get_percent(account, model_type):
     elif model_type == 'opus':
         return account.opus_sonnet_percent
     return 100
+
+@register.filter
+def get_percent_color(value):
+    try:
+        pct = int(value)
+        # HSL: 0 is red, 120 is green.
+        hue = (pct / 100.0) * 120
+        return f"hsl({hue}, 70%, 50%)"
+    except (ValueError, TypeError):
+        return "hsl(120, 70%, 50%)"

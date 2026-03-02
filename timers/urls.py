@@ -14,4 +14,8 @@ urlpatterns = [
 
     # Percentage Update Route
     path('update_percent/<int:account_id>/', views.update_percent, name='update_percent'),
+
+    # Bulk Account Update Route
+    path('bulk_update/<int:account_id>/', views.bulk_update_account, name='bulk_update_account'),
 ]
+
