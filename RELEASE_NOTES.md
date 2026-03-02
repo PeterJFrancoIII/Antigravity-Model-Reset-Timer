@@ -1,25 +1,17 @@
-MEETING Antigravity-Model-Reset-Timer V1.2 Open-Source Release – 2026-02-27
-Attendees: peterjfrencoiii, Open Source Python Community
-Mission: Launch a lightweight, cross-platform desktop GUI for tracking up to 20 LLM API limits with zero background CPU drain.
+# Antigravity Timer v1.1.0 - macOS Stability Release
 
-Key Wins:
-✅ Target Timestamp Architecture: Achieved zero-background resource drain by moving timer logic to absolute UTC deltas.
-✅ Cross-Platform Ready: Verified compatibility across Mac, Windows, and Linux via PyWebView.
-✅ MongoDB Persistence: Integrated Djongo to ensure no timer data is lost during system reboots or crashes.
+This release focuses on resolving critical stability issues and fixing UI/UX bugs in the macOS bundled application.
 
-Strategic Decisions:
-* Architecture: Chose PyWebView over Electron to minimize binary size and memory footprint.
-* Persistence: Standardized on MongoDB for flexible, document-based account tracking.
+### Fixed
+- **Fork Bomb Resolution**: Fixed a critical bug where the bundled `.app` would launch infinite instances of itself on startup.
+- **Template Errors**: Resolved a `TemplateSyntaxError` caused by a missing `get_percent_color` filter.
+- **Missing Routes**: Fixed a `NoReverseMatch` error by implementing the missing `bulk_update_account` view and URL pattern.
+- **Repository Optimization**: Updated `.gitignore` to exclude large build/dist artifacts, keeping the repository lean.
 
-Action Items:
-Community Developers:
-* Implement API webhooks for major LLM providers.
-* Enhance native OS desktop notifications.
+### Features
+- **Binary Distribution**: This release includes a pre-built macOS `.app` bundle for easy installation.
 
-Growth & Future Capabilities:
-* Native Builds: Moving toward optimized PyInstaller .spec configurations for downloadable binaries.
-
-Critical Blockers:
-* None: Ready for public launch.
-
-Status: Ready for public launch
+### Installation (macOS)
+1. Download `AntigravityTimer_macOS.zip` from the assets below.
+2. Unzip the file and move `AntigravityTimer.app` to your Applications folder.
+3. Open the app to start tracking your accounts.
