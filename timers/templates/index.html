@@ -112,9 +112,9 @@
         .model-row {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 15px;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
@@ -127,7 +127,7 @@
 
         .model-name {
             font-weight: 600;
-            font-size: 0.9em;
+            font-size: 0.85em;
             text-transform: uppercase;
             color: #888;
             letter-spacing: 0.5px;
@@ -135,7 +135,7 @@
 
         .timer {
             font-family: "JetBrains Mono", "Fira Code", monospace;
-            font-size: 1.4em;
+            font-size: 1.25em;
             color: #00ff88;
             text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
@@ -145,22 +145,32 @@
             text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
         }
 
+        .percent-display {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #00ff88;
+        }
+
         .form-row {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
-            margin-top: 5px;
+            margin-top: 2px;
         }
 
         input[type="number"] {
             background: rgba(255, 255, 255, 0.08);
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px;
-            width: 50px;
+            padding: 6px;
+            width: 45px;
             border-radius: 6px;
             text-align: center;
-            font-size: 0.9em;
+            font-size: 0.85em;
+        }
+
+        .percent-input {
+            width: 55px !important;
         }
 
         input[type="text"] {
@@ -198,13 +208,14 @@
         }
 
         .set-btn {
-            padding: 8px 15px;
-            font-size: 0.85em;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            font-size: 0.8em;
+            background: #007aff;
+            flex-grow: 1;
         }
 
         .set-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #0063d1;
         }
     </style>
 </head>
@@ -212,9 +223,7 @@
 <body>
     <div class="container">
         <div class="header-bar">
-            <h2>Antigravity Tracker <span
-                    style="font-size: 0.6em; opacity: 0.5; vertical-align: middle; margin-left: 10px;">({{ account_count
-                    }}/20)</span></h2>
+            <h2>Antigravity Tracker <span style="font-size: 0.6em; opacity: 0.5;">({{ account_count }}/20)</span></h2>
             {% if account_count < 20 %} <form action="{% url 'add_account' %}" method="POST"
                 style="display: flex; gap: 10px;">
                 {% csrf_token %}
@@ -254,9 +263,11 @@
                 {% for model in "flash,pro,opus"|split:"," %}
                 <div class="model-row">
                     <div class="model-header">
-                        <span class="model-name">{% if model == "flash" %}Gemini Flash{% elif model == "pro" %}Gemini
-                            Pro{% else %}Opus/GPT{% endif %}</span>
-                        <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="model-name">
+                            {% if model == "flash" %}Flash{% elif model == "pro" %}Pro{% else %}Opus{% endif %}
+                        </span>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="percent-display">{{ account|get_percent:model }}%</span>
                             {% with reset_val=account|get_reset_time:model %}
                             <span class="timer" data-target="{{ reset_val|date:'c' }}">READY</span>
 
@@ -275,7 +286,9 @@
                         <input type="hidden" name="model_type" value="{{ model }}">
                         <input type="number" name="hours" placeholder="H" min="0">
                         <input type="number" name="minutes" placeholder="M" min="0" max="59">
-                        <button type="submit" class="set-btn">Set Reset</button>
+                        <input type="number" name="percent" class="percent-input" placeholder="%" min="0" max="100"
+                            value="{{ account|get_percent:model }}">
+                        <button type="submit" class="set-btn">Update</button>
                     </form>
                 </div>
                 {% endfor %}
@@ -335,6 +348,7 @@
                 }
             });
         }
+
         setInterval(updateClocks, 1000);
         updateClocks();
     </script>

@@ -10,5 +10,10 @@ class AntigravityAccount(models.Model):
     gemini_pro_reset = models.DateTimeField(null=True, blank=True)
     opus_sonnet_reset = models.DateTimeField(null=True, blank=True)
 
+    # Percentage remaining for each model
+    gemini_flash_percent = models.IntegerField(default=100)
+    gemini_pro_percent = models.IntegerField(default=100)
+    opus_sonnet_percent = models.IntegerField(default=100)
+
     def __str__(self):
         return self.name

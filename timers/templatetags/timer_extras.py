@@ -15,3 +15,13 @@ def get_reset_time(account, model_type):
     elif model_type == 'opus':
         return account.opus_sonnet_reset
     return None
+
+@register.filter
+def get_percent(account, model_type):
+    if model_type == 'flash':
+        return account.gemini_flash_percent
+    elif model_type == 'pro':
+        return account.gemini_pro_percent
+    elif model_type == 'opus':
+        return account.opus_sonnet_percent
+    return 100

@@ -11,4 +11,7 @@ urlpatterns = [
 
     # New Reset Timer Route
     path('reset_timer/<int:account_id>/<str:model_type>/', views.reset_timer, name='reset_timer'),
+
+    # Percentage Update Route
+    path('update_percent/<int:account_id>/', views.update_percent, name='update_percent'),
 ]

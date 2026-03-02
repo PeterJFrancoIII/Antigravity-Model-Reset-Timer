@@ -21,14 +21,26 @@ def set_timer(request, account_id):
     if request.method == 'POST':
         account = get_object_or_404(AntigravityAccount, id=account_id)
         model_type = request.POST.get('model_type')
-        hours = int(request.POST.get('hours', 0) or 0)
-        minutes = int(request.POST.get('minutes', 0) or 0)
+        hours_raw = request.POST.get('hours', '')
+        minutes_raw = request.POST.get('minutes', '')
+        percent_raw = request.POST.get('percent', '')
         
-        future_time = timezone.now() + timedelta(hours=hours, minutes=minutes)
+        # Only update timer if hours or minutes are provided and non-zero
+        if hours_raw or minutes_raw:
+            hours = int(hours_raw or 0)
+            minutes = int(minutes_raw or 0)
+            if hours > 0 or minutes > 0:
+                future_time = timezone.now() + timedelta(hours=hours, minutes=minutes)
+                if model_type == 'flash': account.gemini_flash_reset = future_time
+                elif model_type == 'pro': account.gemini_pro_reset = future_time
+                elif model_type == 'opus': account.opus_sonnet_reset = future_time
         
-        if model_type == 'flash': account.gemini_flash_reset = future_time
-        elif model_type == 'pro': account.gemini_pro_reset = future_time
-        elif model_type == 'opus': account.opus_sonnet_reset = future_time
+        # Only update percent if a value was provided
+        if percent_raw:
+            percent = int(percent_raw)
+            if model_type == 'flash': account.gemini_flash_percent = percent
+            elif model_type == 'pro': account.gemini_pro_percent = percent
+            elif model_type == 'opus': account.opus_sonnet_percent = percent
             
         account.save()
     return redirect('dashboard')
@@ -60,6 +72,20 @@ def reset_timer(request, account_id, model_type):
         if model_type == 'flash': account.gemini_flash_reset = None
         elif model_type == 'pro': account.gemini_pro_reset = None
         elif model_type == 'opus': account.opus_sonnet_reset = None
+            
+        account.save()
+    return redirect('dashboard')
+
+def update_percent(request, account_id):
+    """Updates the remaining percentage for a specific model."""
+    if request.method == 'POST':
+        account = get_object_or_404(AntigravityAccount, id=account_id)
+        model_type = request.POST.get('model_type')
+        percent = int(request.POST.get('percent', 100))
+        
+        if model_type == 'flash': account.gemini_flash_percent = percent
+        elif model_type == 'pro': account.gemini_pro_percent = percent
+        elif model_type == 'opus': account.opus_sonnet_percent = percent
             
         account.save()
     return redirect('dashboard')
